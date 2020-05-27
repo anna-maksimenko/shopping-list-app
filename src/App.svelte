@@ -1,30 +1,24 @@
 <script>
-	export let name;
+	import ListItem from './components/ListItem.svelte';
+
+
+	const itemsList = [
+		{ id: 1, name: 'potato' },
+		{ id: 2, name: 'carrot' },
+		{ id: 3, name: 'onion' }
+	];
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<!-- Here should be list component -->
+	{#each itemsList as {name, id}}
+	<!-- Here should be list item component -->
+		<ListItem text={name} id={id} />
+	{/each}
+	<!-- End of list component -->
+	
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>

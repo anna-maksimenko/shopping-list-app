@@ -4,8 +4,16 @@
     export let id;
 </script>
 
-<style>
+<style type="text/scss">
+@import './src/styles/vars.scss';
     /* your styles go here */
+    .list-item{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: left;
+        align-items: center;
+    }
 </style>
 
 <!-- markup (zero or more items) goes here -->

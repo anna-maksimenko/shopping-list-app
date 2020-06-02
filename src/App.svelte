@@ -2,13 +2,7 @@
 	import List from './components/List.svelte';
 	import ListItem from './components/ListItem.svelte';
 	import Tailwindcss from './Tailwindcss.svelte';
-
-
-	const itemsList = [
-		{ id: 1, name: 'potato' },
-		{ id: 2, name: 'carrot' },
-		{ id: 3, name: 'onion' }
-	];
+	import { productData } from './globals.js';
 </script> 
 
 <Tailwindcss />
@@ -16,9 +10,9 @@
 <main>
 	<List>
 	<!-- Here should be list component -->
-	{#each itemsList as {name, id}}
+	{#each $productData as {name, id, enabled}}
 	<!-- Here should be list item component -->
-		<ListItem text={name} id={id} />
+		<ListItem text={name} id={id} bind:enabled={enabled}/>
 	{/each}
 	<!-- End of list component -->
 	</List>

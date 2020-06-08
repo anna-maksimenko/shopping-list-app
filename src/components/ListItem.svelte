@@ -1,12 +1,15 @@
 <script>
     // your script goes here
+    import { productMeasure } from '../globals.js';
     export let text;
     export let id;
     export let enabled = false;
-
+    export let measure;
+    
     function checkboxHandler() {
         enabled = !enabled;
     }
+    
 </script>
 
 <style type="text/scss">
@@ -70,5 +73,14 @@
 
     <div class="list-item__quantity">
         <input type="number" name={`quantity-${id}`}/>
+    </div>
+    <div class="list-item__measure">
+        <select bind:value={measure}>
+            {#each $productMeasure as {name}}
+                <option value={name}>
+                    {name}
+                </option>
+            {/each}
+        </select>
     </div>
 </div>

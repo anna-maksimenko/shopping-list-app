@@ -10,9 +10,9 @@
 <main>
 	<List>
 	<!-- Here should be list component -->
-	{#each $productData as {name, id, enabled}}
+	{#each $productData as {name, id, enabled, measurement}}
 	<!-- Here should be list item component -->
-		<ListItem text={name} id={id} bind:enabled={enabled}/>
+		<ListItem text={name} id={id} bind:enabled={enabled} bind:measure={measurement}/>
 	{/each}
 	<!-- End of list component -->
 	</List>

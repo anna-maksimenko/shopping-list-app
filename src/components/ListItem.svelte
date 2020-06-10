@@ -1,6 +1,7 @@
 <script>
     // your script goes here
     import { productMeasure } from '../globals.js';
+    import Dropdown from '../components/Dropdown.svelte';
     export let text;
     export let id;
     export let enabled = false;
@@ -9,7 +10,7 @@
     function checkboxHandler() {
         enabled = !enabled;
     }
-    
+
 </script>
 
 <style type="text/scss">
@@ -82,5 +83,8 @@
                 </option>
             {/each}
         </select>
+    </div>
+    <div class="list-item__dropdown">
+        <Dropdown dropdownData={$productMeasure} bind:selectedValue={measure}/>
     </div>
 </div>

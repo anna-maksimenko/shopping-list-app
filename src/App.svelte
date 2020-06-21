@@ -1,30 +1,44 @@
 <script>
-	export let name;
-</script>
+	import { flip } from 'svelte/animate';
+	import { fade } from 'svelte/transition';
+	import Tailwindcss from './Tailwindcss.svelte';
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+	import List from './components/List.svelte';
+	import ListItem from './components/ListItem.svelte';
+	import NewItem from './components/NewItem.svelte';
+	import { productData } from './globals.js';
+
+	function removeListItem(event) {
+		$productData = $productData.filter(productItem => productItem.id !== event.detail); 
+	}
+
+	function addListItem(event) {
+		$productData = [...$productData, Object.assign(event.detail, {id: $productData[$productData.length-1].id + 1, enabled: false})];
+	}
+
+</script> 
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	.list-wrapper{
+		@apply top-0;
 	}
 </style>
+
+<Tailwindcss />
+
+<main>
+	<List>
+		{#each $productData.filter(productItem => productItem.enabled) as {name, id, enabled, quantity, measurement} (id)}
+			<div class="list-wrapper" in:fade out:fade animate:flip>
+				<ListItem text={name} id={id} bind:enabled={enabled} bind:quantity={quantity} bind:measure={measurement} on:itemRemove={removeListItem}/>
+			</div>
+		{/each}
+		{#each $productData.filter(productItem => !productItem.enabled) as {name, id, enabled, quantity, measurement} (id)}
+			<div class="list-wrapper" in:fade out:fade animate:flip>
+				<ListItem text={name} id={id} bind:enabled={enabled} bind:quantity={quantity} bind:measure={measurement} on:itemRemove={removeListItem}/>
+			</div>
+		{/each}
+		<NewItem on:itemAdd={addListItem}/>
+	</List>
+	
+</main>

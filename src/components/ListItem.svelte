@@ -1,14 +1,28 @@
 <script>
-    // your script goes here
+    import { createEventDispatcher } from 'svelte'; 
+
     import { productMeasure } from '../globals.js';
     import Dropdown from '../components/Dropdown.svelte';
+    
     export let text;
-    export let id;
+    export let id = -1;
     export let enabled = false;
     export let measure;
+    export let editable = false;
+    export let quantity = 0;
+
+    const dispatch = createEventDispatcher();
     
     function checkboxHandler() {
         enabled = !enabled;
+    }
+
+    function removeBtnHandler(id) {
+		dispatch('itemRemove', id);
+    }
+    
+    function addBtnHandler() {
+		dispatch('triggerNewItem');
     }
 
 </script>
@@ -57,34 +71,44 @@
                 box-shadow:  inset 1px 1px 2px $boxShadowDark, inset -1px -1px 2px $boxShadowLight;
             }
         }
+        &__dropdown{
+            @apply w-1/4;
+        }
     }
 </style>
 
 <!-- markup (zero or more items) goes here -->
 <div class="list-item">
     <div class="list-item__inner-wrapper">
-        <label class="list-item__check" for={`checkbox-${id}`} class:list-item__check--enabled={enabled}>
-            <div class="list-item__checkmark" on:click={checkboxHandler}></div>
-            <input type="checkbox" name={`checkbox-${id}`} bind:checked={enabled}>
-        </label>
-        <div class="list-item__name">
-            <p>{text}</p>
-        </div>
+        {#if editable}
+            <div class="list-item__name-input">
+                <input type="text" name="name-input" bind:value={text}/>
+            </div>
+        {:else}
+            <label class="list-item__check" for={`checkbox-${id}`} class:list-item__check--enabled={enabled}>
+                <div class="list-item__checkmark" on:click={checkboxHandler}></div>
+                <input type="checkbox" name={`checkbox-${id}`} bind:checked={enabled}>
+            </label>
+            <div class="list-item__name">
+                <p>{text}</p>
+            </div>
+        {/if}
     </div>
+        
 
     <div class="list-item__quantity">
-        <input type="number" name={`quantity-${id}`}/>
-    </div>
-    <div class="list-item__measure">
-        <select bind:value={measure}>
-            {#each $productMeasure as {name}}
-                <option value={name}>
-                    {name}
-                </option>
-            {/each}
-        </select>
+        <input type="number" name={`quantity-${id}`} bind:value={quantity}/>
     </div>
     <div class="list-item__dropdown">
         <Dropdown dropdownData={$productMeasure} bind:selectedValue={measure}/>
     </div>
+    {#if editable}
+        <div class="list-item__add">
+            <button on:click="{addBtnHandler}">add</button>
+        </div>
+    {:else}
+        <div class="list-item__remove">
+            <button on:click="{() => removeBtnHandler(id)}">remove</button>
+        </div>
+    {/if}
 </div>

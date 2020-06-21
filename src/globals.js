@@ -4,18 +4,21 @@ import { writable, readable } from 'svelte/store';
             id: 1, 
             name: 'potato', 
             enabled: false, 
+            quantity: 1,
             measurement: 'liter'
         },
 		{ 
             id: 2, 
             name: 'carrot', 
             enabled: true,
+            quantity: 1,
             measurement: 'kilogram'
         },
 		{ 
             id: 3, 
             name: 'onion', 
             enabled: false,
+            quantity: 1,
             measurement: 'kilogram'
         }
     ];

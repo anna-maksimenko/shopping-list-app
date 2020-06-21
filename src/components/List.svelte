@@ -1,10 +1,5 @@
-<script>
-    // your script goes here
-</script>
-
 <style type="text/scss">
-@import './src/styles/vars.scss';
-    /* your styles go here */
+    @import './src/styles/vars.scss';
     .list{
         @apply flex flex-col py-10;
         background-color: $mainColor; 
@@ -12,7 +7,6 @@
     }
 </style>
 
-<!-- markup (zero or more items) goes here -->
 <div class="list">
     <slot></slot>
 </div>

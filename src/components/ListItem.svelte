@@ -28,8 +28,7 @@
 </script>
 
 <style type="text/scss">
-@import './src/styles/vars.scss';
-    /* your styles go here */
+    @import './src/styles/vars.scss';
     .list-item{
         @apply flex flex-row justify-around flex-wrap items-center py-4 relative;
         &__inner-wrapper{
@@ -77,7 +76,6 @@
     }
 </style>
 
-<!-- markup (zero or more items) goes here -->
 <div class="list-item">
     <div class="list-item__inner-wrapper">
         {#if editable}
@@ -95,7 +93,6 @@
         {/if}
     </div>
         
-
     <div class="list-item__quantity">
         <input type="number" name={`quantity-${id}`} bind:value={quantity}/>
     </div>

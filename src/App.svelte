@@ -9,7 +9,7 @@
 	import { productData } from './globals.js';
 
 	function removeListItem(event) {
-		$productData = $productData.filter(t => t.id !== event.detail); 
+		$productData = $productData.filter(productItem => productItem.id !== event.detail); 
 	}
 
 	function addListItem(event) {
@@ -18,10 +18,16 @@
 
 </script> 
 
+<style>
+	.list-wrapper{
+		@apply top-0;
+	}
+</style>
+
 <Tailwindcss />
 
 <main>
-	<List >
+	<List>
 		{#each $productData.filter(productItem => productItem.enabled) as {name, id, enabled, quantity, measurement} (id)}
 			<div class="list-wrapper" in:fade out:fade animate:flip>
 				<ListItem text={name} id={id} bind:enabled={enabled} bind:quantity={quantity} bind:measure={measurement} on:itemRemove={removeListItem}/>
@@ -36,9 +42,3 @@
 	</List>
 	
 </main>
-
-<style>
-	.list-wrapper{
-		@apply top-0;
-	}
-</style>

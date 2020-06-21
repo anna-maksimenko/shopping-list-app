@@ -1,7 +1,7 @@
 <script>
-    // your script goes here
     export let dropdownData;
     export let selectedValue;
+
     let showDropdown = false;
     let select;
 
@@ -9,7 +9,7 @@
         showDropdown = true;
     }
     function dropdownHide(e) {
-        if (e.target!==select) {
+        if (e.target !== select) {
             showDropdown = false;
         }
     }
@@ -52,7 +52,6 @@
         }
     }
 </style>
-
 
 <div class="dropdown">
     <div class="dropdown__area-selected" on:click={selectEventHandler} bind:this={select}>{selectedValue}

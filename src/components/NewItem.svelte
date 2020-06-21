@@ -1,12 +1,10 @@
 <script>
-import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
 
-import { productMeasure } from '../globals.js';
-import ListItem from './ListItem.svelte';
+    import { productMeasure } from '../globals.js';
+    import ListItem from './ListItem.svelte';
 
-    
-    
-    let newItem ={
+    let newItem = {
         name: '',
         quantity: 0,
         measurement: $productMeasure[0].name
@@ -24,9 +22,4 @@ import ListItem from './ListItem.svelte';
 	}
 </script>
 
-<style>
-    /* your styles go here */
-</style>
-
-<!-- markup (zero or more items) goes here -->
- <ListItem bind:text={newItem.name} bind:quantity={newItem.quantity} bind:measure={newItem.measurement} editable={true} on:triggerNewItem={triggerHandler}/>
+<ListItem bind:text={newItem.name} bind:quantity={newItem.quantity} bind:measure={newItem.measurement} editable={true} on:triggerNewItem={triggerHandler}/>

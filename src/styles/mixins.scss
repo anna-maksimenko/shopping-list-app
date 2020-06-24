@@ -1,0 +1,46 @@
+@import './vars.scss';
+
+//Flat neuromorphic shadow
+@mixin flat-box-shadow {
+    box-shadow: 4px 4px 8px $boxShadowDark, -4px -4px 8px $boxShadowLight;
+}
+
+@mixin regular-font {
+    font-family: "Moon";
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: $baseFontColor;
+    @media (max-width: 640px) {
+        font-size: 1rem;
+    }
+}
+
+@mixin dropdown-font {
+    font-family: "Moon";
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 2.5px;
+    color: $baseFontColor;
+    @media (max-width: 640px) {
+        font-size: 14px;
+    }
+}
+
+//Input
+@mixin input {
+    @apply outline-none border-none rounded-full px-4 py-2 block w-full appearance-none leading-tight;
+    background-color: $mainColor;
+    box-shadow: inset 4px 4px 8px $boxShadowDark,
+    inset -4px -4px 8px $boxShadowLight;
+    transition: all 0.2s ease-in-out;
+    -moz-appearance: textfield;
+    &:focus {
+        box-shadow: inset 1px 1px 2px $boxShadowDark, inset -1px -1px 2px $boxShadowLight;
+    }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}

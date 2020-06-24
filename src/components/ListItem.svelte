@@ -3,6 +3,8 @@
 
     import { productMeasure } from '../globals.js';
     import Dropdown from '../components/Dropdown.svelte';
+    import CrossIcon from '../components/icons/CrossIcon.svelte';
+    import AddIcon from '../components/icons/AddIcon.svelte';
     
     export let text;
     export let id = -1;
@@ -28,14 +30,48 @@
 </script>
 
 <style type="text/scss">
+    @import './src/styles/fonts.scss';
     @import './src/styles/vars.scss';
+    @import './src/styles/mixins.scss';
     .list-item{
         @apply flex flex-row justify-around flex-wrap items-center py-4 relative;
+        @media (max-width: 575px) {
+            @apply justify-between;
+        }
         &__inner-wrapper{
             @apply flex items-center;
+            width: 35%;
+            flex-basis: 35%;
+            @media (max-width: 575px) {
+                @apply w-full pb-5;
+                flex-basis: 100%;
+            }
+        }
+        &__name-input{
+            @media (max-width: 575px) {
+                width: 100%;
+            }
         }
         &__name{
-            @apply ml-2 relative;
+            @apply ml-4 relative;
+            >p{
+                @include regular-font;
+            }
+        }
+        &__quantity{
+            flex-basis: 10%;
+            width: 10%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            @media (max-width: 575px) {
+                @apply w-1/4;
+                flex-basis: 25%;
+            }
+        }
+        &__name-input input[type="text"], &__quantity input[type="number"]{
+            @apply text-center;
+            @include input;
+            @include regular-font;
         }
         &__check{
             @apply relative;
@@ -44,34 +80,44 @@
             }
             &.list-item__check--enabled{
                 .list-item__checkmark{
-                    background: linear-gradient(145deg, #a9e3d2, #c9fff9);
-                    box-shadow: 13px 13px 27px $boxShadowDark, -13px -13px 27px $boxShadowLight;
+                    background: linear-gradient(145deg, #59585f, #6a6971);
+                    box-shadow: 6px 4px 23px $boxShadowDark, -6px -4px 23px $boxShadowLight;
                     transition: all 0.2s ease-in-out;
                     &:after{
-                        @apply absolute block w-4 h-4 top-1/2 left-1/2 rounded-full;
+                        @apply absolute block w-3 h-3 top-1/2 left-1/2 rounded-full;
                         content: "";
                         transform: translate(-50%, -50%);
-                        background: linear-gradient(145deg, #51ff11, #44e60e);
+                        background-color: $highlightColor;
                         transition: all .25s ease;
                     }
                 }
             }
         }
         &__checkmark{
-            @apply h-8 w-8 rounded-full bg-mint;
-            box-shadow: 5px 5px 10px $boxShadowDark, -5px -5px 10px $boxShadowLight, inset 0px 0px 4px rgba(255, 255, 255, .2), inset 5px 5px 10px rgba(55, 84, 170, 0), inset -5px -5px 10px rgba(255, 255, 255, 0), 0px 0px 4px rgba(255, 255, 255, 0)
-        }
-        &__quantity input[type="number"]{
-            @apply bg-white outline-none border-none rounded-full py-2 px-4 block w-full appearance-none leading-normal;
-            background-color: $mainColor;
-            box-shadow: inset 5px 5px 10px $boxShadowDark, inset -5px -5px 10px $boxShadowLight;
-            transition: all 0.2s ease-in-out;
-            &:focus {
-                box-shadow:  inset 1px 1px 2px $boxShadowDark, inset -1px -1px 2px $boxShadowLight;
-            }
+            @apply h-8 w-8 rounded-full bg-gray;
+            @include flat-box-shadow;
         }
         &__dropdown{
-            @apply w-1/4;
+            @apply w-1/5;
+            flex-basis: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            @media (max-width: 575px) {
+                @apply w-2/5;
+                flex-basis: 40%;
+            }
+        }
+        &__remove, &__add{
+            flex-basis: auto;
+            width: auto;
+            flex-grow: 0;
+            flex-shrink: 0;
+            button{
+                @apply flex justify-center items-center border-none rounded-full outline-none;
+                width: 40px;
+                height: 40px;
+                @include flat-box-shadow;
+            }
         }
     }
 </style>
@@ -101,11 +147,11 @@
     </div>
     {#if editable}
         <div class="list-item__add">
-            <button on:click="{addBtnHandler}">add</button>
+            <button on:click="{addBtnHandler}"><AddIcon/></button>
         </div>
     {:else}
         <div class="list-item__remove">
-            <button on:click="{() => removeBtnHandler(id)}">remove</button>
+            <button on:click="{() => removeBtnHandler(id)}"><CrossIcon/></button>
         </div>
     {/if}
 </div>

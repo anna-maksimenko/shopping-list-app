@@ -81,7 +81,7 @@
             <ul class="dropdown__content">
                 {#each dropdownData as {name}}
                     <li on:click={selectionHandler.bind(this, name)}>
-                        <p>{name}</p>
+                        <span>{name}</span>
                     </li>
                 {/each}
             </ul>

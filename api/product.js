@@ -2,19 +2,19 @@ const axios = require('axios');
 
 const BASE_URL = 'https://graphql.fauna.com/graphql';
 
-const fetchAllProductsQuery = `
-{
-  allProducts {
-    data {
-        _id,
-        name
-        enabled
-        quantity
-        measurement
-    }
-  }
-}
-`;
+// const fetchAllProductsQuery = `
+// {
+//   allProducts {
+//     data {
+//         _id,
+//         name
+//         enabled
+//         quantity
+//         measurement
+//     }
+//   }
+// }
+// `;
 
 const addProductQuery = `
 mutation newProduct {
@@ -33,31 +33,31 @@ mutation newProduct {
 }
 `
 
-const fetchAllProducts = async () => {
-    const request = await axios({
-        url: BASE_URL,
-        method: 'post',
-        data: {
-            query: fetchAllProductsQuery
-        },
-        headers: {
-            "authorization": "Basic "
-        },
-    })
+// const fetchAllProducts = async () => {
+//     const request = await axios({
+//         url: BASE_URL,
+//         method: 'post',
+//         data: {
+//             query: fetchAllProductsQuery
+//         },
+//         headers: {
+//             "authorization": "Basic "
+//         },
+//     })
 
-    const data = request.data.data.allProducts.data;
+//     const data = request.data.data.allProducts.data;
 
-    if (data) {
-        var modifiedData = data.map(function (product) {
-            return Object.assign(product, {
-                id: product._id
-            })
-        });
-        return modifiedData;
-    } else {
-        console.log('Error')
-    }
-}
+//     if (data) {
+//         var modifiedData = data.map(function (product) {
+//             return Object.assign(product, {
+//                 id: product._id
+//             })
+//         });
+//         return modifiedData;
+//     } else {
+//         console.log('Error')
+//     }
+// }
 
 const addProduct = async ({
     name,
@@ -171,6 +171,7 @@ const updateProduct = async ({
 }
 
 module.exports = (req, res) => {
+    someFunction(req.body)
     res.json({
         name: 'John',
         email: 'john@example.com'

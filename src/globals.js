@@ -1,4 +1,5 @@
 import { writable, readable } from 'svelte/store';
+
 	const itemsList = [
 		{ 
             id: 1, 
@@ -34,5 +35,5 @@ import { writable, readable } from 'svelte/store';
         }
     ];
 
-export const productData = writable(itemsList);
+export const productData = writable([]);
 export const productMeasure = readable(itemsMeasure);

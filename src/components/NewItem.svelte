@@ -22,4 +22,4 @@
 	}
 </script>
 
-<ListItem bind:text={newItem.name} bind:quantity={newItem.quantity} bind:measure={newItem.measurement} editable={true} on:triggerNewItem={triggerHandler}/>
+<ListItem bind:name={newItem.name} bind:quantity={newItem.quantity} bind:measurement={newItem.measurement} editable={true} on:triggerNewItem={triggerHandler}/>

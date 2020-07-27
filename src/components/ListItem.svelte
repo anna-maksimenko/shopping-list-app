@@ -1,30 +1,53 @@
 <script>
     import { createEventDispatcher } from 'svelte'; 
+    import axios from 'axios';
 
     import { productMeasure } from '../globals.js';
     import Dropdown from '../components/Dropdown.svelte';
     import CrossIcon from '../components/icons/CrossIcon.svelte';
     import AddIcon from '../components/icons/AddIcon.svelte';
+    import EditIcon from '../components/icons/EditIcon.svelte';
     
-    export let text;
-    export let id = -1;
+    export let name;
+    export let id = "";
     export let enabled = false;
-    export let measure;
+    export let measurement;
     export let editable = false;
     export let quantity = 0;
 
     const dispatch = createEventDispatcher();
+
+    const initialData = {
+        enabled,
+        name,
+        quantity,
+        measurement
+    }
+
+    $: isDirty = (() => {
+        let currentData = {
+            enabled,
+            name,
+            quantity,
+            measurement
+        }
+        return Object.keys(initialData).some(key => initialData[key] !== currentData[key]);
+    })()
     
     function checkboxHandler() {
         enabled = !enabled;
     }
 
-    function removeBtnHandler(id) {
+    function removeBtnHandler() {
 		dispatch('itemRemove', id);
     }
     
     function addBtnHandler() {
 		dispatch('triggerNewItem');
+    }
+
+    function updateBtnHandler() {
+		dispatch('itemUpdate', {id, name, enabled, quantity, measurement});
     }
 
 </script>
@@ -107,7 +130,7 @@
                 flex-basis: 40%;
             }
         }
-        &__remove, &__add{
+        &__remove, &__add, &__edit{
             flex-basis: auto;
             width: auto;
             flex-grow: 0;
@@ -126,7 +149,7 @@
     <div class="list-item__inner-wrapper">
         {#if editable}
             <div class="list-item__name-input">
-                <input type="text" name="name-input" bind:value={text}/>
+                <input type="text" name="name-input" bind:value={name}/>
             </div>
         {:else}
             <label class="list-item__check" for={`checkbox-${id}`} class:list-item__check--enabled={enabled}>
@@ -134,7 +157,7 @@
                 <input type="checkbox" name={`checkbox-${id}`} bind:checked={enabled}>
             </label>
             <div class="list-item__name">
-                <p>{text}</p>
+                <p>{name}</p>
             </div>
         {/if}
     </div>
@@ -143,15 +166,21 @@
         <input type="number" name={`quantity-${id}`} bind:value={quantity}/>
     </div>
     <div class="list-item__dropdown">
-        <Dropdown dropdownData={$productMeasure} bind:selectedValue={measure}/>
+        <Dropdown dropdownData={$productMeasure} bind:selectedValue={measurement}/>
     </div>
     {#if editable}
         <div class="list-item__add">
             <button on:click="{addBtnHandler}"><AddIcon/></button>
         </div>
     {:else}
-        <div class="list-item__remove">
-            <button on:click="{() => removeBtnHandler(id)}"><CrossIcon/></button>
-        </div>
+        {#if isDirty}
+            <div class="list-item__edit">
+                <button on:click="{updateBtnHandler}"><EditIcon/></button>
+            </div>
+        {:else}
+            <div class="list-item__remove">
+                <button on:click="{removeBtnHandler}"><CrossIcon/></button>
+            </div>
+        {/if}
     {/if}
 </div>

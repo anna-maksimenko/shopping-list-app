@@ -1,59 +1,24 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://graphql.fauna.com/graphql';
+const BASE_URL = '/api';
 
-const fetchAllProductsQuery = `
-{
-  allProducts {
-    data {
-        _id,
-        name
-        enabled
-        quantity
-        measurement
-    }
-  }
-}
-`;
 
-const addProductQuery = `
-mutation newProduct {
-    createProduct(data: {
-        name: "carrot",
-        enabled: true,
-        quantity: 2,
-        measurement: "kilogram"
-    }) {
-        _id,
-        name,
-        enabled,
-        quantity,
-        measurement
-    }
-}
-`
 
 export const fetchAllProducts = async () => {
     const request = await axios({
-        url: BASE_URL,
-        method: 'post',
-        data: {
-            query: fetchAllProductsQuery
-        },
-        headers: {
-            "authorization": "Basic "
-        },
+        url: `${BASE_URL}/all-products`,
+        method: 'get'
     })
 
-    const data = request.data.data.allProducts.data;
-
-    if (data) {
-        var modifiedData = data.map(function (product) {
-            return Object.assign(product, {id: product._id})
-        });
-        return modifiedData;
+    if (request.data && request.data.result === "Success") {
+        return request.data.data;
     } else {
-        console.log('Error')
+        console.log('Error');
+        if (request.data.result) {
+            console.log(request.data.errors);
+        } else {
+           console.log("API connection error");
+        }
     }
 }
 

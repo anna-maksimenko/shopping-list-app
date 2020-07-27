@@ -24,11 +24,11 @@ const fetchAllProducts = async () => {
             query: fetchAllProductsQuery
         },
         headers: {
-            "authorization": "Basic "
+            "authorization": `Basic ${process.env.DB_KEY}`
         },
     })
 
-    if (request.data.errors.length < 1) {
+    if (!request.data.errors || request.data.errors.length < 1) {
         const data = request.data.data.allProducts.data;
         const modifiedData = data.map(function (product) {
             return Object.assign(product, {
@@ -38,8 +38,8 @@ const fetchAllProducts = async () => {
         return {result: "Success", data: modifiedData};
     } else {
         console.log('Error');
-        console.log(request.data.errors.join(", "));
-        return {result: "Error", errorMessage: request.data.errors.join(", ")};
+        console.log(request.data.errors);
+        return {result: "Error", errors: request.data.errors};
     }
 }
 

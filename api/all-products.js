@@ -28,10 +28,9 @@ const fetchAllProducts = async () => {
         },
     })
 
-    const data = request.data.data.allProducts.data;
-
-    if (data) {
-        var modifiedData = data.map(function (product) {
+    if (request.data.errors.length < 1) {
+        const data = request.data.data.allProducts.data;
+        const modifiedData = data.map(function (product) {
             return Object.assign(product, {
                 id: product._id
             })

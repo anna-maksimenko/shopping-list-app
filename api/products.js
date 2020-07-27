@@ -172,7 +172,7 @@ const updateProduct = async ({
     console.log(data);
 }
 
-export default (req: NowRequest, res: NowResponse) => {
+module.exports = (req: NowRequest, res: NowResponse) => {
     res.json({
         name: 'John',
         email: 'john@example.com'

@@ -1,4 +1,5 @@
-import axios from 'axios';
+const axios = require('axios')
+
 import { NowRequest, NowResponse } from '@vercel/node'
 
 const BASE_URL = 'https://graphql.fauna.com/graphql';

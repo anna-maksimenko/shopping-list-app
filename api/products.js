@@ -1,6 +1,4 @@
-const axios = require('axios')
-
-const { NowRequest, NowResponse } = require('@vercel/node');
+const axios = require('axios');
 
 const BASE_URL = 'https://graphql.fauna.com/graphql';
 
@@ -172,7 +170,7 @@ const updateProduct = async ({
     console.log(data);
 }
 
-module.exports = (req: NowRequest, res: NowResponse) => {
+module.exports = (req, res) => {
     res.json({
         name: 'John',
         email: 'john@example.com'

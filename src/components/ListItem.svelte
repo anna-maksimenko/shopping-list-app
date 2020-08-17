@@ -12,12 +12,16 @@
     export let id = "";
     export let enabled = false;
     export let measurement;
-    export let editable = false;
     export let quantity = 0;
+
+    export let editable = false;
+    // export let newItem = false;
+
+    let clickable = false;
 
     const dispatch = createEventDispatcher();
 
-    const initialData = {
+    let currentData = {
         enabled,
         name,
         quantity,
@@ -25,17 +29,22 @@
     }
 
     $: isDirty = (() => {
-        let currentData = {
+
+        let storeData = {
             enabled,
             name,
             quantity,
             measurement
         }
-        return Object.keys(initialData).some(key => initialData[key] !== currentData[key]);
+        return Object.keys(storeData).some(key => storeData[key] !== currentData[key]);
     })()
     
+    function labelHandler() {
+        clickable = !clickable;
+    }
+
     function checkboxHandler() {
-        enabled = !enabled;
+        currentData.enabled = !currentData.enabled;
     }
 
     function removeBtnHandler() {
@@ -43,11 +52,17 @@
     }
     
     function addBtnHandler() {
-		dispatch('triggerNewItem');
+        dispatch('triggerNewItem', {name: currentData.name, quantity: currentData.quantity, measurement: currentData.measurement});
+        currentData = {
+            enabled,
+            name,
+            quantity,
+            measurement
+        }
     }
 
     function updateBtnHandler() {
-		dispatch('itemUpdate', {id, name, enabled, quantity, measurement});
+		dispatch('itemUpdate', {id, name: currentData.name, enabled: currentData.enabled, quantity: currentData.quantity, measurement: currentData.measurement});
     }
 
 </script>
@@ -149,24 +164,30 @@
     <div class="list-item__inner-wrapper">
         {#if editable}
             <div class="list-item__name-input">
-                <input type="text" name="name-input" bind:value={name}/>
+                <input type="text" name="name-input" bind:value={currentData.name}/>
             </div>
         {:else}
-            <label class="list-item__check" for={`checkbox-${id}`} class:list-item__check--enabled={enabled}>
-                <div class="list-item__checkmark" on:click={checkboxHandler}></div>
-                <input type="checkbox" name={`checkbox-${id}`} bind:checked={enabled}>
+        ({currentData.enabled});
+            <label class="list-item__check" for={`checkbox-${id}`} class:list-item__check--enabled={currentData.enabled}>
+                <div class="list-item__checkmark" on:click="{checkboxHandler}"></div>
+                <input type="checkbox" name={`checkbox-${id}`} bind:checked={currentData.enabled}>
             </label>
             <div class="list-item__name">
                 <p>{name}</p>
             </div>
+            <!-- {#if clickable}
+                <div class="list-item__name-input--clickable">
+                    <input type="text" name="name-input--clickable" value={name}/>
+                </div>
+            {/if} -->
         {/if}
     </div>
         
     <div class="list-item__quantity">
-        <input type="number" name={`quantity-${id}`} bind:value={quantity}/>
+        <input type="number" name={`quantity-${id}`} bind:value={currentData.quantity}/>
     </div>
     <div class="list-item__dropdown">
-        <Dropdown dropdownData={$productMeasure} bind:selectedValue={measurement}/>
+        <Dropdown dropdownData={$productMeasure} bind:selectedValue={currentData.measurement}/>
     </div>
     {#if editable}
         <div class="list-item__add">

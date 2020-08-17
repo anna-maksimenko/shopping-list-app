@@ -1,3 +1,5 @@
+import {responseBuilder} from "./_api-helpers.js"
+
 const axios = require('axios');
 
 const BASE_URL = 'https://graphql.fauna.com/graphql';
@@ -28,19 +30,15 @@ const fetchAllProducts = async () => {
         },
     })
 
-    if (!request.data.errors || request.data.errors.length < 1) {
-        const data = request.data.data.allProducts.data;
-        const modifiedData = data.map(function (product) {
+
+    return responseBuilder(request, (data) => {
+        const dataRoot = data.data.allProducts.data;
+        return dataRoot.map(function (product) {
             return Object.assign(product, {
                 id: product._id
             })
         });
-        return {result: "Success", data: modifiedData};
-    } else {
-        console.log('Error');
-        console.log(request.data.errors);
-        return {result: "Error", errors: request.data.errors};
-    }
+    })
 }
 
 module.exports = async (req, res) => {

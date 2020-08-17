@@ -12,14 +12,10 @@
 
     const dispatch = createEventDispatcher();
 
-    function triggerHandler() {
-        dispatch('itemAdd', Object.assign({}, newItem));
-        newItem = {
-            name: '',
-            quantity: 0,
-            measurement: $productMeasure[0].name
-        }
+    function triggerHandler(event) {
+        console.log(newItem);
+        dispatch('itemAdd', Object.assign({}, event.detail));
 	}
 </script>
 
-<ListItem bind:name={newItem.name} bind:quantity={newItem.quantity} bind:measurement={newItem.measurement} editable={true} on:triggerNewItem={triggerHandler}/>
+<ListItem name={newItem.name} quantity={newItem.quantity} measurement={newItem.measurement} editable={true} on:triggerNewItem={triggerHandler}/>

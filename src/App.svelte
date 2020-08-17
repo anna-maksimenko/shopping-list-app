@@ -6,15 +6,15 @@
 	import List from './components/List.svelte';
 	import ListItem from './components/ListItem.svelte';
 	import NewItem from './components/NewItem.svelte';
-	import { productData } from './globals.js';
-	import { fetchAllProducts, addProduct, deleteProduct, updateProduct} from './helpers/faunaQuery.js';
+	import { productData, productMeasure } from './globals.js';
+	import { fetchAllProducts, addProduct, deleteProduct, updateProduct, fetchAllMeasurements} from './helpers/api.js';
 
-	getProducts();
+	let dataPromise = getData();
 
-	async function getProducts() {
+	async function getData() {
 		$productData = await fetchAllProducts();
-		console.log("productData");
-		console.log($productData);
+		$productMeasure = await fetchAllMeasurements();
+		return Promise.all([$productData, $productMeasure]);
 	}
 
 	function removeListItem(event) {
@@ -23,15 +23,12 @@
 			$productData = $productData.filter(productItem => productItem.id !== event.detail);
 			deleteProduct(event.detail); 
 		}
-		console.log(event);
-		console.log("product-data");
-		console.log($productData);
 	}
 
 	function addListItem(event) {
 		const completeItem = Object.assign(event.detail, {enabled: false})
+		//Store update
 		$productData = [...$productData, completeItem];
-		console.log(event.detail);
 		addProduct(completeItem);
 	}
 
@@ -46,9 +43,6 @@
 			});
 			updateProduct(event.detail); 
 		}
-		console.log(event);
-		console.log("product-data");
-		console.log($productData);
 	}
 
 </script> 
@@ -77,9 +71,9 @@
 <Tailwindcss />
 
 <main>
-	<!-- {#await $productData}
-
-	{:then data} -->
+	{#await dataPromise}
+<p></p>
+	{:then} 
 		<List>
 			<div class="list__wrapper">
 				{#each $productData.filter(productItem => productItem.enabled) as {id, name, enabled, quantity, measurement} (id)}
@@ -96,5 +90,5 @@
 			<div class="line"></div>
 			<div class="list__add-wrapper"><NewItem on:itemAdd={addListItem}/></div>
 		</List>
-	<!-- {/await} -->
+	{/await} 
 </main>

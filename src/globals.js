@@ -36,4 +36,4 @@ import { writable, readable } from 'svelte/store';
     ];
 
 export const productData = writable([]);
-export const productMeasure = readable(itemsMeasure);
+export const productMeasure = writable([]);

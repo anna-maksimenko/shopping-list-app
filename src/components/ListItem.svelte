@@ -14,10 +14,11 @@
     export let measurement;
     export let quantity = 0;
 
-    export let editable = false;
-    // export let newItem = false;
+    export let addItemMode = false;
 
-    let clickable = false;
+    let editable = false;
+    let inputElement;
+    let labelElement;
 
     const dispatch = createEventDispatcher();
 
@@ -38,9 +39,16 @@
         }
         return Object.keys(storeData).some(key => storeData[key] !== currentData[key]);
     })()
-    
-    function labelHandler() {
-        clickable = !clickable;
+
+    function inputHide(e) {
+        if (e.target === inputElement) {
+            console.log("1", inputElement);
+            return null;
+        } else if ((e.target === labelElement) && !editable) {
+            editable = true;
+        } else if ((e.target !== labelElement) && (e.target !== inputElement)) {
+            editable = false;
+        }
     }
 
     function checkboxHandler() {
@@ -66,6 +74,8 @@
     }
 
 </script>
+
+<svelte:window on:click={inputHide}/>
 
 <style type="text/scss">
     @import './src/styles/fonts.scss';
@@ -162,24 +172,24 @@
 
 <div class="list-item">
     <div class="list-item__inner-wrapper">
-        {#if editable}
+        {#if addItemMode}
             <div class="list-item__name-input">
                 <input type="text" name="name-input" bind:value={currentData.name}/>
             </div>
         {:else}
-        ({currentData.enabled});
             <label class="list-item__check" for={`checkbox-${id}`} class:list-item__check--enabled={currentData.enabled}>
                 <div class="list-item__checkmark" on:click="{checkboxHandler}"></div>
                 <input type="checkbox" name={`checkbox-${id}`} bind:checked={currentData.enabled}>
             </label>
-            <div class="list-item__name">
-                <p>{name}</p>
-            </div>
-            <!-- {#if clickable}
-                <div class="list-item__name-input--clickable">
-                    <input type="text" name="name-input--clickable" value={name}/>
+            {#if editable}
+                <div class="list-item__name-input-editable">
+                    <input type="text" name="name-input-editable" bind:value={currentData.name} bind:this={inputElement}/>
                 </div>
-            {/if} -->
+            {:else}
+            <div class="list-item__name">
+                <p bind:this={labelElement}>{currentData.name}</p>
+            </div>
+            {/if}
         {/if}
     </div>
         
@@ -189,7 +199,7 @@
     <div class="list-item__dropdown">
         <Dropdown dropdownData={$productMeasure} bind:selectedValue={currentData.measurement}/>
     </div>
-    {#if editable}
+    {#if addItemMode}
         <div class="list-item__add">
             <button on:click="{addBtnHandler}"><AddIcon/></button>
         </div>

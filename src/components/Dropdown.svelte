@@ -7,9 +7,6 @@
     let showDropdown = false;
     let select;
 
-    function dropdownShow() {
-        showDropdown = true;
-    }
     function dropdownHide(e) {
         if (e.target !== select) {
             showDropdown = false;

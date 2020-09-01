@@ -18,4 +18,4 @@
 	}
 </script>
 
-<ListItem name={newItem.name} quantity={newItem.quantity} measurement={newItem.measurement} editable={true} on:triggerNewItem={triggerHandler}/>
+<ListItem name={newItem.name} quantity={newItem.quantity} measurement={newItem.measurement} addItemMode={true} on:triggerNewItem={triggerHandler}/>
